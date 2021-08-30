@@ -1,12 +1,13 @@
 import { Component } from "react";
 import CommentList from "./CommentList";
+import AddComments from "./AddComments";
 
 class CommentArea extends Component {
   state = {
     comments: [],
   };
 
-  componentDidMount = async () => {
+  fetchComments = async () => {
     try {
       let response = await fetch(
         "https://striveschool-api.herokuapp.com/api/comments/" +
@@ -28,9 +29,21 @@ class CommentArea extends Component {
     }
   };
 
+  componentDidMount = async () => {
+    this.fetchComments();
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log(hiii);
+    if (previousProps.comments !== this.props.comments) {
+      this.fetchComments();
+    }
+  }
+
   render() {
     return (
       <div>
+        <AddComments asin={this.props.asin} />
         <CommentList commentsToSee={this.state.comments} />
       </div>
     );
